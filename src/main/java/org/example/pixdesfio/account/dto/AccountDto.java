@@ -15,15 +15,13 @@ public record AccountDto(
         String id,
         @NotNull
         @Min(value = 0)
-        BigInteger balance,
-        List<TransferDto> transfers
+        BigInteger balance
 ) {
 
     public static AccountDto fromEntity(Account account) {
         return new AccountDto(
                 account.getId(),
-                account.getBalance(),
-                account.getTransfers().stream().map(TransferDto::fromEntity).toList()
+                account.getBalance()
         );
     }
 }

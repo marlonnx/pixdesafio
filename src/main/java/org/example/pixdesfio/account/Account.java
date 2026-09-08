@@ -24,11 +24,11 @@ public class Account {
     @Column(nullable = false, unique = true)
     private String id;
 
+    /**
+     * Amount represented in cents.
+     */
     @Column(nullable = false)
     private BigInteger balance;
-
-    @OneToMany(mappedBy = "payer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Transfer> transfers = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at")

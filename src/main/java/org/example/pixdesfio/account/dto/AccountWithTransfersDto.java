@@ -1,6 +1,7 @@
 package org.example.pixdesfio.account.dto;
 
 import org.example.pixdesfio.account.Account;
+import org.example.pixdesfio.transfer.Transfer;
 import org.example.pixdesfio.transfer.dto.TransferDto;
 
 import java.math.BigInteger;
@@ -12,11 +13,11 @@ public record AccountWithTransfersDto(
         List<TransferDto> transfers
 ) {
 
-    public static AccountWithTransfersDto fromEntity(Account account) {
+    public static AccountWithTransfersDto fromEntity(Account account, List<Transfer> transfers) {
         return new AccountWithTransfersDto(
                 account.getId(),
                 account.getBalance(),
-                account.getTransfers().stream().map(TransferDto::fromEntity).toList()
+                transfers.stream().map(TransferDto::fromEntity).toList()
         );
     }
 }

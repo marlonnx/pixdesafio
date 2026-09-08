@@ -7,14 +7,14 @@ import org.example.pixdesfio.account.dto.AccountWithTransfersDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RestController()
+@RestController
 @RequestMapping(path = "/accounts")
 @AllArgsConstructor
 public class AccountController {
     final private AccountService accountService;
 
 
-    @PostMapping()
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccountDto creatAccount(@RequestBody @Valid AccountDto body) {
         return accountService.createAccount(body);

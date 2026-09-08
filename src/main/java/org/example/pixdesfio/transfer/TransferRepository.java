@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface TransferRepository extends JpaRepository<Transfer, String> {
     List<Transfer> findByStatusOrderByCreatedAtAsc(TransferStatus status, Pageable pageable);
     Optional<Transfer> findByIdempotencyKey(String key);
+    List<Transfer> findByPayerIdOrPayeeId(String payerId, String payeeId);
 }

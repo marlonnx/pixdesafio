@@ -33,8 +33,8 @@ public class TransferService {
         if (dto.payeeId().equals(dto.payerId())) {
             throw new ValidationException("Payer and Payee cant be equals");
         }
-        Account payer = accountRepository.findById(dto.payerId()).orElseThrow(EntityNotFoundException::new);
-        Account payee = accountRepository.findById(dto.payeeId()).orElseThrow(EntityNotFoundException::new);
+        Account payer = accountRepository.findByIdForUpdate(dto.payerId()).orElseThrow(EntityNotFoundException::new);
+        Account payee = accountRepository.findByIdForUpdate(dto.payeeId()).orElseThrow(EntityNotFoundException::new);
         Transfer transfer = Transfer.builder()
                 .payer(payer)
                 .payee(payee)
@@ -45,15 +45,15 @@ public class TransferService {
     }
 
     @Transactional
-    private void processTransfer(Transfer transfer) {
+    public void processTransfer(Transfer transfer) {
         if (!transferRepository.existsById(transfer.getId())) {
             throw new EntityNotFoundException();
         }
         if (transfer.getStatus() != TransferStatus.pending) {
             return;
         }
-        Account payer = accountRepository.findById(transfer.getPayer().getId()).orElseThrow(EntityNotFoundException::new);
-        Account payee = accountRepository.findById(transfer.getPayee().getId()).orElseThrow(EntityNotFoundException::new);
+        Account payer = accountRepository.findByIdForUpdate(transfer.getPayer().getId()).orElseThrow(EntityNotFoundException::new);
+        Account payee = accountRepository.findByIdForUpdate(transfer.getPayee().getId()).orElseThrow(EntityNotFoundException::new);
         BigInteger newAmount = payer.getBalance().subtract(transfer.getAmount());
 
         if (newAmount.signum() < 0) {
